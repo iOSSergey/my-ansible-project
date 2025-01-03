@@ -1,0 +1,36 @@
+---
+- name: Initial server setup for Carmona
+  hosts: Carmona
+  become: true
+  tasks:
+    - name: Update apt packages
+      apt:
+        update_cache: yes
+
+    - name: Upgrade apt packages
+      apt:
+        upgrade: dist
+
+    - name: Install essential packages
+      apt:
+        name:
+          - wget
+          - curl
+          - vim
+        state: present
+    - name: Install the latest version of Python
+      apt:
+        name: python3
+        state: latest
+
+    - name: Install pip for Python 3
+      apt:
+        name: python3-pip
+        state: latest
+
+    - name: Verify Python version
+      command: python3 --version
+      register: python_version
+
+    - debug:
+        var: python_version.stdout
